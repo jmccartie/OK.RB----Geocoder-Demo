@@ -1,2 +1,10 @@
 %h1 Location
-%p= debug request.location
+%p
+  %strong IP:
+  = request.ip
+%p
+  %strong City:
+  = request.location.city
+%p
+  %strong IP:
+  = request.location.country
