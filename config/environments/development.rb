@@ -27,6 +27,7 @@ end
 # Override request IP for development
 class ActionDispatch::Request
   def ip
-    "12.153.211.226"
+    #"12.153.211.226" # Edmond
+    "70.112.132.198" # Austin
   end
 end

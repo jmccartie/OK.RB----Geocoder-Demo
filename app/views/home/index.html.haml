@@ -25,10 +25,10 @@
 %h1 Geographic Queries
 %p
   %strong Nearest LifeChurch.tv Location:
-  - @nearest = Location.near(@loc_array, 45).first
-  = @nearest.nil? ? "Nothing within 45 miles. Try Church Online?" : "#{@nearest.name} (#{@nearest.city}, #{@nearest.state})"
+  - @nearest = Location.near(@loc_array, 1000).first
+  = "#{@nearest.name} (#{@nearest.city}, #{@nearest.state})"
   %br/
-  %pre @nearest = Location.near(request.location.coordinates).first
+  %pre @nearest = Location.near(request.location.coordinates, 1000).first
 %p
   %strong Distance from your location to the above location?
   = @nearest.distance_to(@loc_array)
