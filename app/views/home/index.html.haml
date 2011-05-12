@@ -1,10 +1,67 @@
-%h1 Location
+%h1 Basic Info From Request
+= debug request.location
+%h1 Your Location
 %p
   %strong IP:
   = request.ip
+  %br/
+  %pre request.ip
 %p
   %strong City:
   = request.location.city
+  %br/
+  %pre request.location.city
 %p
-  %strong IP:
+  %strong Country:
   = request.location.country
+  %br/
+  %pre request.location.country
+
+-#####
+- @loc_array = request.location.coordinates
+-####
+
+
+%h1 Geographic Queries
+%p
+  %strong Nearest LifeChurch.tv Location:
+  - @nearest = Location.near(@loc_array).first
+  = "#{@nearest.name} (#{@nearest.city}, #{@nearest.state})"
+  %br/
+  %pre @nearest = Location.near(request.location.coordinates).first
+%p
+  %strong Distance from your location to the above location?
+  = @nearest.distance_to(@loc_array)
+  %br/
+  %pre @nearest.distance_to(@loc_array)
+
+%p
+  %strong Midpoint between here and there?
+  = Geocoder::Calculations.geographic_center([@loc_array, [@nearest.lat, @nearest.lng]])
+  %br/
+  %pre Geocoder::Calculations.geographic_center([@loc_array, [@nearest.lat, @nearest.lng]])
+
+%p
+  %strong Bearing to the above location?
+  = Geocoder::Calculations.compass_point(@nearest.bearing.to_i)
+  = "(#{@nearest.bearing} to be exact)"
+  %br/
+  %pre Geocoder::Calculations.compass_point(@nearest.bearing.to_i)    (@nearest.bearing)
+
+%p
+  %strong Other LifeChurch.tv locations nearby?  Sayyyyyy, within 30 miles?
+  %ul
+  - @nearest.nearbys(30).each do |location|
+    %li= "#{location.name}, #{location.distance_to(@loc_array)} mi away"
+  %br/
+  %pre @nearest.nearbys(30).each do |location|
+
+
+%h1 Reverse Geocoding
+%p
+  %strong Our Fort Worth location -- take a stab at it's lat/lng?
+  - s = Geocoder.search( Location.where(:name => "Fort Worth").first.address_array )
+  = "#{s[0].latitude}, #{s[0].longitude}"
+  %br/
+  %pre Geocoder.search( Location.where(:name => "Fort Worth").first.address_array )
+  %pre s[0].latitude}, s[0].longitude

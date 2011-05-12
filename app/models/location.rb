@@ -1,4 +1,6 @@
 class Location < ActiveRecord::Base
+  geocoded_by :address, :latitude  => :lat, :longitude => :lng
+
 
   validates_presence_of :city, :email, :facebook_id, :name, :slug, :state, :timezone
   validates_numericality_of :lat, :lng
@@ -12,6 +14,10 @@ class Location < ActiveRecord::Base
   #   return locations.empty? ? self.where(:slug => "int").first : locations.first
   # end
 
+
+  def address_array
+    [street_1, city, state, country].compact.join(', ')
+  end
 
 
 end

@@ -24,3 +24,9 @@ OkrbGeo::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 end
 
+# Override request IP for development
+class ActionDispatch::Request
+  def ip
+    "12.153.211.226"
+  end
+end
